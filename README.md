@@ -1,5 +1,9 @@
 # R-T 抽奖页面
 
+[![Logo](./img/logo.png "点击图片打开预览页")](https://renqiang06.github.io/Lottery4R-T)
+
+## [页面预览](https://renqiang06.github.io/Lottery4R-T "点击访问页面")
+
 ## 抽奖流程：
 
 1. 选择当次要抽奖的人数（52、22、12、2），默认选择22。
