@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="screen-orientation" content="portrait">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
+    <title>R-T抽奖页面</title>
+    <link rel="shortcut icon" href="./img/logo.png" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/wall.css">
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        .result {
+            position: absolute;
+            height: 320px;/*320px*/
+            width: 100%;
+            left: 0;
+            top: 50%;
+            margin-top: -160px;
+            text-align: center;
+            padding: 10px;
+            display: none;
+        }
+
+        .result span {
+            display: inline-block;
+            font-size: 15px; /* 25*/
+            width: 50px;/* 150*/
+            background: #fff;
+            line-height: 20px;/* 30px*/
+            color: #000;
+            margin: 5px;/* 5px*/
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+            padding: 5px 0;/* 10px 0*/
+        }
+
+        button,
+        input,
+        optgroup,
+        select,
+        textarea {
+            color: inherit;
+            font: inherit;
+            margin: 0;
+            border: none;
+        }
+
+        button {
+            overflow: visible;
+        }
+
+        button,
+        select {
+            text-transform: none;
+        }
+
+        button,
+        html input[type=button],
+        input[type=reset],
+        input[type=submit] {
+            -webkit-appearance: button;
+            cursor: pointer;
+        }
+
+        .pure-button {
+            display: inline-block;
+            zoom: 1;
+            line-height: normal;
+            white-space: nowrap;
+            vertical-align: middle;
+            text-align: center;
+            cursor: pointer;
+            -webkit-user-drag: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .pure-button {
+            font-family: inherit;
+            font-size: 100%;
+            padding: .5em 1em;
+            color: #444;
+            color: rgba(0, 0, 0, .8);
+            border: 0 rgba(0, 0, 0, 0);
+            background-color: #E6E6E6;
+            text-decoration: none;
+            border-radius: 2px;
+        }
+
+        .pure-button:focus {
+            outline: 0
+        }
+
+        .pure-button-hover,
+        .pure-button:hover,
+        .pure-button:focus {
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000', GradientType=0);
+            background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0, 0, 0, .05)), to(rgba(0, 0, 0, .1)));
+            background-image: -webkit-linear-gradient(transparent, rgba(0, 0, 0, .05) 40%, rgba(0, 0, 0, .1));
+            background-image: -moz-linear-gradient(top, rgba(0, 0, 0, .05) 0, rgba(0, 0, 0, .1));
+            background-image: -o-linear-gradient(transparent, rgba(0, 0, 0, .05) 40%, rgba(0, 0, 0, .1));
+            background-image: linear-gradient(transparent, rgba(0, 0, 0, .05) 40%, rgba(0, 0, 0, .1));
+        }
+
+        .button-success,
+        .button-error,
+        .button-warning,
+        .button-secondary {
+            color: white;
+            border-radius: 4px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .button-success {
+            background: rgb(28, 184, 65);
+        }
+
+        .button-error {
+            background: rgb(202, 60, 60);
+        }
+
+        .button-warning {
+            background: rgb(223, 117, 20);
+        }
+
+        .button-secondary {
+            background: rgb(66, 184, 221);
+        }
+
+        .tools {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            text-align: center;
+        }
+
+        .tools .pure-button {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 0;
+            text-align: center;
+            width: 50px;
+        }
+
+        .mask {
+            -webkit-filter: blur(5px);
+            filter: blur(5px);
+        }
+
+        #main {
+            -webkit-transition: all 1s;
+            transition: all 1s;
+        }
+
+        .result-btn {
+            margin-top: 20px;
+            text-align: right;
+            margin-right: 110px;/*30px*/
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!--光标特效仙女棒-->
+    <!-- <script src="https://blog-static.cnblogs.com/files/axqa/fairyDustCursor.js"></script> -->
+    <!--光标之泡泡-->
+    <!-- <script src="https://blog-static.cnblogs.com/files/axqa/bubbleCursor.js"></script> -->
+    <!--笑脸-->
+    <!-- <script src="https://blog-static.cnblogs.com/files/axqa/emojiCursor.js"></script> -->
+    <!--雪花-->
+    <!-- <script src="https://blog-static.cnblogs.com/files/axqa/snowflakeCursor.js"></script> -->
+    <!-- 点击后出现烟花效果 -->
+    <!-- <script src="https://blog-static.cnblogs.com/files/axqa/cursor-effects.js"></script> -->
+
+    <div id="main" class="wall">
+        <div class="result-btn">
+            <a href="./result.html" target="_blank">获奖名单R-T</a>
+        </div>
+    </div>
+    <div id="result" class="result">
+    </div>
+    <div id="tools" class="tools">
+        <button v-for="value in btns" @click="onClick(value)" class="pure-button"
+            :class="{ 'button-error': selected == value}">{{value}}</button>
+        <button class="pure-button" @click="toggle" :class="{'button-secondary': !running,
+               'button-success': running}">{{running?'抽奖!':'开始'}}</button>
+        <button class="pure-button button-warning" @click="reset">重置</button>
+    </div>
+    <script type="text/javascript" src="js/zepto.js"></script>
+    <script type="text/javascript" src="js/vue.js"></script>
+    <script type="text/javascript" src="js/tagcanvas.js"></script>
+    <script type="text/javascript" src="js/member.js"></script>
+    <!-- 3D球 -->
+    <script type="text/javascript">
+        (function () {
+            var choosed = JSON.parse(localStorage.getItem('choosed')) || {};
+            console.log(choosed);
+            var speed = function () {
+                return [0.1 * Math.random() + 0.01, -(0.1 * Math.random() + 0.01)];
+            };
+            var getKey = function (item) {
+                return item.name + '-' + item.Lnumber;
+            };
+            var createHTML = function () {
+                var html = ['<ul>'];
+                member.forEach(function (item, index) {
+                    item.index = index;
+                    var key = getKey(item);
+                    var color = choosed[key] ? 'red' : 'white';
+                    html.push('<li><a href="#" style="color: ' + color + ';">' + item.name + '</a></li>');
+                });
+                html.push('</ul>');
+                return html.join('');
+            };
+            var lottery = function (count) {
+                var list = canvas.getElementsByTagName('a');
+                var color = 'red';//yellow
+                var ret = member
+                    .filter(function (m, index) {
+                        m.index = index;
+                        return !choosed[getKey(m)];
+                    })
+                    .map(function (m) {
+                        return Object.assign({
+                            score: Math.random()
+                        }, m);
+                    })
+                    .sort(function (a, b) {
+                        return a.score - b.score;
+                    })
+                    .slice(0, count)
+                    .map(function (m) {
+                        choosed[getKey(m)] = 1;
+                        list[m.index].style.color = color;
+                        return m.name + '<br/>' + m.Lnumber;
+                    });
+                localStorage.setItem('choosed', JSON.stringify(choosed));
+                return ret;
+            };
+            var canvas = document.createElement('canvas');
+            canvas.id = 'myCanvas';
+            canvas.width = document.body.offsetWidth;
+            canvas.height = document.body.offsetHeight;
+            document.getElementById('main').appendChild(canvas);
+            new Vue({
+                el: '#tools',
+                data: {
+                    selected: 22,
+                    running: false,
+                    btns: [
+                        52, 22, 12, 2
+                    ]
+                },
+                mounted() {
+                    canvas.innerHTML = createHTML();
+                    TagCanvas.Start('myCanvas', '', {
+                        textColour: null,
+                        initial: speed(),
+                        dragControl: 0, //1
+                        textHeight: 14 //14
+                    });
+                },
+                methods: {
+                    reset: function () {
+                        if (confirm('确定要重置么？所有之前的抽奖历史将被清除！')) {
+                            localStorage.clear();
+                            location.reload(true);
+                        }
+                    },
+                    onClick: function (num) {
+                        $('#result').css('display', 'none');
+                        $('#main').removeClass('mask');
+                        this.selected = num;
+                    },
+                    toggle: function () {
+                        if (this.running) {
+                            TagCanvas.SetSpeed('myCanvas', speed());
+                            var ret = lottery(this.selected);
+                            if (ret.length === 0) {
+                                $('#result').css('display', 'block').html('<span>已抽完</span>');
+                                return
+                            }
+                            $('#result').css('display', 'block').html('<span>' + ret.join('</span><span>') + '</span>');
+                            TagCanvas.Reload('myCanvas');
+                            setTimeout(function () {
+                                localStorage.setItem(new Date().toString(), JSON.stringify(ret));
+                                $('#main').addClass('mask');
+                            }, 300);
+                        } else {
+                            $('#result').css('display', 'none');
+                            $('#main').removeClass('mask');
+                            TagCanvas.SetSpeed('myCanvas', [5, 1]);
+                        }
+                        this.running = !this.running;
+                    }
+                }
+            });
+        })();
+    </script>
+    <!-- 鼠标单击爱心 -->
+    <script type="text/javascript">
+        ! function (e, t, a) {
+            function r() {
+                for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[
+                    e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x +
+                    "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e]
+                        .scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+                requestAnimationFrame(r)
+            }
+
+            function n() {
+                var t = "function" == typeof e.onclick && e.onclick;
+                e.onclick = function (e) {
+                    t && t(), o(e)
+                }
+            }
+
+            function o(e) {
+                var a = t.createElement("div");
+                a.className = "heart", s.push({
+                    el: a,
+                    x: e.clientX - 5,
+                    y: e.clientY - 5,
+                    scale: 1,//1
+                    alpha: 2,//1
+                    color: c()
+                }), t.body.appendChild(a)
+            }
+
+            function i(e) {
+                var a = t.createElement("style");
+                a.type = "text/css";
+                try {
+                    a.appendChild(t.createTextNode(e))
+                } catch (t) {
+                    a.styleSheet.cssText = e
+                }
+                t.getElementsByTagName("head")[0].appendChild(a)
+            }
+
+            function c() {
+                return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math
+                    .random()) + ")"
+            }
+            var s = [];
+            e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e
+                .mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+                    setTimeout(e, 1e3 / 60)
+                }, i(
+                    ".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"
+                ), n(), r()
+        }(window, document);
+    </script>
+</body>
+<!-- 蜘蛛网 -->
+<!-- <script type="text/javascript" src="js/canvas-nest.min.js"></script> -->
+<script>
+    !function () {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+                o = t.length,
+                i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),
+                c: n(i, "color", "255,0,0"),
+                // c: n(i, "color", "35,176,181"),
+                n: n(i, "count", 199)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+                c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function (i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                    null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+                x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+            d = t(),
+            l = "c_n" + d.l,
+            r = m.getContext("2d"),
+            x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+                function (n) {
+                    window.setTimeout(n, 1e3 / 45)
+                },
+            w = Math.random,
+            y = {
+                x: null,
+                y: null,
+                max: 2e4
+            };
+        m.id = l,
+            m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+            e("body")[0].appendChild(m),
+            o(),
+            window.onresize = o,
+            window.onmousemove = function (n) {
+                n = n || window.event,
+                    y.x = n.clientX,
+                    y.y = n.clientY
+            },
+            window.onmouseout = function () {
+                y.x = null,
+                    y.y = null
+            };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+                g = w() * c,
+                v = 2 * w() - 1,
+                p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+            setTimeout(function () {
+                i()
+            },
+                100)
+    }();
+</script>
+
+</html>
